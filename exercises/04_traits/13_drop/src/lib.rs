@@ -2,6 +2,30 @@
 //  unless a certain operation has been performed on it.
 //  You can see the expected API in the tests below.
 
+use std::path::Component::ParentDir;
+
+struct DropBomb {
+    cnt: u32,
+}
+
+impl DropBomb {
+    fn new() -> Self {
+        Self { cnt: 1 }
+    }
+
+    fn defuse(&mut self) {
+        self.cnt -= 1;
+    }
+}
+
+impl Drop for DropBomb {
+    fn drop(&mut self) {
+        if self.cnt > 0 {
+            panic!("bomb!");
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
